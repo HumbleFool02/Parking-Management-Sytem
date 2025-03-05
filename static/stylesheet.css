@@ -1,0 +1,352 @@
+/* General Styles */
+body {
+    background-color: #fff;
+    font-family: 'Karla', sans-serif;
+}
+
+h1 > a {
+    text-decoration:none;
+    color:#fff !important;
+}
+
+.btn {
+    font-weight: bold;
+}
+
+.btn-read-more {
+    background-color: #fff;
+    padding: 13px 30px;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+.btn-read-more:hover {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+.btn-outline-success {
+    color: #e41c1c;
+    border-color: #e41c1c;
+}
+
+.btn-outline-success:hover {
+    background-color: #e73b3b;
+    color: #fff;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #343a40; /* Dark background color */
+    padding: 10px 0;
+    border-bottom: 1px solid #fff; /* Add a bottom border */
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #fff; /* White text color */
+    text-decoration: none;
+}
+
+.navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row; 
+}
+
+.navbar-nav li {
+    margin: 0 20px; /* Adjust margin */
+}
+
+.navbar-nav li:first-child {
+    margin-left: 0; /* Remove margin from the first li element */
+}
+
+.navbar-nav .navbar-item {
+    color: #fff; /* Text color */
+    font-size: 20px;
+    font-weight: bold; /* Bold font weight */
+    text-align: center; /* Center-align the text */
+    padding: 10px; /* Add padding */
+}
+
+.navbar-nav .navbar-item:hover {
+    color: #25db0d; /* Text color on hover */
+}
+
+.navbar-nav .btn {
+    color: #fff;
+    border-color: #fff;
+    font-weight: bold;
+}
+
+.navbar-nav .btn:hover {
+    background-color: #25db0d;
+    border-color: #25db0d;
+    color: #fff;
+}
+
+
+
+/* Card Styles */
+.card {
+    background-color: #f8f9fa;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    margin: 10px auto;
+    
+    
+}
+
+.card-title {
+    font-size: 1.2rem;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+/* Container Styles */
+.container {
+    padding-top: 20px;
+}
+
+/* Login Form Styles */
+.login-wrapper {
+    width: 300px;
+    max-width: 100%;
+}
+
+.login-wrapper .form-control {
+    border: 0;
+    border-bottom: 1px solid #000000;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 15px 10px;
+    margin-bottom: 7px;
+}
+
+.login-wrapper .form-control::-webkit-input-placeholder {
+    color: #b0adad;
+}
+
+.login-wrapper .form-control::-moz-placeholder {
+    color: #b0adad;
+}
+
+.login-wrapper .form-control:-ms-input-placeholder {
+    color: #b0adad;
+}
+
+.login-wrapper .form-control::-ms-input-placeholder {
+    color: #b0adad;
+}
+
+.login-wrapper .form-control::placeholder {
+    color: #b0adad;
+}
+
+.login-title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.login-btn {
+    padding: 13px 30px;
+    background-color: #030303;
+    border-radius: 0;
+    font-size: 25px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.login-btn:hover {
+    border: 1px solid #4a0d0d;
+    background-color: #3467bf;
+    color: #000;
+}
+
+.forgot-password-link {
+    font-size: 14px;
+    color: #080808;
+    text-decoration: underline;
+}
+
+/* Flash Messages */
+.flashes, .alert {
+    margin-bottom: 20px;
+}
+
+.flashes li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    background-color: #f8d7da; /* Red background color for danger messages */
+    color: #721c24; /* Dark text color for danger messages */
+}
+
+.flashes li.success {
+    background-color: #d4edda; /* Green background color for success messages */
+    color: #155724; /* Dark text color for success messages */
+}
+
+/* Alerts */
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* Intro Section Styles */
+.intro-section {
+    margin-top: 50%;
+    background-image: url("/static/Images/logo.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 991px) {
+    .intro-section {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
+@media (max-width: 767px) {
+    .intro-section {
+        padding: 28px;
+    }
+}
+
+@media (max-width: 575px) {
+    .intro-section {
+        min-height: auto;
+    }
+}
+
+.brand-wrapper .logo {
+    height: 70px;
+}
+
+@media (max-width: 767px) {
+    .brand-wrapper {
+        margin-left: 40px;
+        margin-bottom: 35px;
+    }
+}
+
+.intro-content-wrapper {
+    width: 400px;
+    max-width: 100%;
+    margin-top: 15px;
+    margin-bottom: auto;
+    margin-left: 35px;
+}
+
+.intro-content-wrapper .intro-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.intro-content-wrapper .intro-text {
+    color :#000000;
+    font-size: 19px;
+    line-height: 1.37;
+}
+
+.intro-content-wrapper .btn-read-more {
+    background-color: #fff;
+    padding: 13px 30px;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+.intro-content-wrapper .btn-read-more:hover {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+@media (max-width: 767px) {
+    .intro-section-footer {
+        margin-left: 35px;
+        margin-top: 35px;
+    }
+}
+
+/* Form Section Styles */
+.form-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 767px) {
+    .form-section {
+        padding: 35px;
+    }
+}
+
+.registration-form-section {
+    border: 2px solid #000000;
+    margin-top: 10%;
+    background-color: #6cdfee;
+    display: flex;
+    padding-top: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 767px) {
+    .form-section {
+        padding: 50px;
+    }
+}
+
+.login-wrapper-footer-text {
+    font-size: 14px;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+    

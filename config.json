@@ -1,0 +1,9 @@
+{
+    "params":
+    {
+        "local_server" : "postgresql://postgres:123456@localhost:5432/postgres?options=-csearch_path=parkEazy",
+        "app_title" : "ParkEazy",
+        "favicon" : "/static/favicon.ico"
+        
+    }
+}

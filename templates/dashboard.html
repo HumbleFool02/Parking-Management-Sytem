@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ params['app_title']}}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/7cf8b731c0.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/stylesheet.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">ParkEazy</a>
+            <ul class="navbar-nav">
+                <li class="navbar-item">Manager Dashboard</li> 
+            </ul>
+            <a href="/logout" class="btn btn-outline-success">Log Out</a>
+        </div>
+    </nav>
+        
+    <div class="container" style="margin-top: 2%;">
+        <div>
+            <h5 style="margin-top: 1%;">Welcome!! {{ name }}</h5>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Parking Lot Overview</h5>
+                        <p>Total Parking Slots: <span id="total_slots">{{ total_slots }}</span></p>
+                        <p>Occupied Slots: <span id="occupied_slots">{{ occupied_slots }}</span></p>
+                        <p>Empty Slots: <span id="empty_slots">{{ empty_slots }}</span></p>
+                        <p>Occupancy Percentage: <span id="occupancy_percentage">{{ occupancy_percentage }}%</span></p>
+                        <p>Last Updated: <span id="last_updated_time">{{ last_updated_time }}</span></p>
+                        <!-- Add a table or visual representation for slot status -->
+                        <p>Slot Status:</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Slot Number</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="slot_statuses">
+                                {% for slot in slot_statuses %}
+                                    <tr>
+                                        <td>{{ slot.slot }}</td>
+                                        <td>{{ slot.status }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- Add a button to manually refresh the overview -->
+                        <button class="btn btn-primary" id="refreshOverviewButton">Refresh Overview</button>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Booking Status</h5>
+                        <table class="table" id = "bookingStatusTable">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>User Id</th>
+                                    <th>Booking Date</th>
+                                    <th>Slot</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Duration (minutes)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                    <tr>
+                                        <td>{{ booking.booking_id }}</td>
+                                        <td>{{ booking.user_id}}</td>
+                                        <td>{{ booking.booking_dt }}</td>
+                                        <td>{{ booking.slot }}</td>
+                                        <td>{{ booking.start_time }}</td>
+                                        <td>{{ booking.end_time }}</td>
+                                        <td>{{ booking.duration }} </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Add this section within the manager dashboard -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">View User Vehicles</h5>
+                        <div class="form-group">
+                            <label for="userSelect">Select User:</label>
+                            <select class="form-select" id="userSelect" onchange="fetchUserVehicles()">
+                                <option value="">Select User</option>
+                                <!-- Populate options dynamically using Flask route or hardcoded options -->
+                                <!-- Example: <option value="user_id">User Name</option> -->
+                            </select>
+                        </div>
+                        <br>
+                        <div id="vehicleDetails">
+                            <!-- Vehicle details will be populated here -->
+                        </div>
+                    </div>
+                </div>                                
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Live Feed</h5>
+                        <video controls>
+                            <source src="path_to_your_video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to fetch updated parking lot data from the server
+        function refreshParkingLotData() {
+            fetch('/refresh')
+                .then(response => {
+                    // Check if the response is successful (status code 200)
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    // Parse the JSON response
+                    return response.json();
+                })
+                .then(data => {
+                    // Update the dashboard elements with the new data
+                    updateDashboard(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+    
+        // Function to update dashboard elements with new data
+        function updateDashboard(data) {
+            // Update total slots count
+            document.getElementById('total_slots').innerText = data.total_slots;
+
+            // Update empty slots count
+            document.getElementById('empty_slots').innerText = data.empty_slots;
+
+            // Update occupied slots count
+            document.getElementById('occupied_slots').innerText = data.occupied_slots;
+
+            // Update occupancy percentage
+            document.getElementById('occupancy_percentage').innerText = data.occupancy_percentage + '%';
+
+            document.getElementById('last_updated_time').innerText = data.last_updated_time;
+
+            // Update slot statuses table
+            var slotStatusesTable = document.getElementById('slot_statuses');
+            // Clear existing table rows
+            slotStatusesTable.innerHTML = '';
+            // Populate table with new data
+            data.slot_statuses.forEach(slot => {
+                var row = slotStatusesTable.insertRow();
+                var slotCell = row.insertCell(0);
+                var statusCell = row.insertCell(1);
+                slotCell.innerText = slot.slot;
+                statusCell.innerText = slot.status;
+            });
+        }
+    
+        // Add event listener to the refresh button
+        document.getElementById('refreshOverviewButton').addEventListener('click', function() {
+            // Call the refreshParkingLotData function to fetch and update data
+            refreshParkingLotData();
+        });
+    
+        // Call the refreshParkingLotData function to fetch and update data on page load
+        refreshParkingLotData();
+
+        // Function to fetch list of users
+        function fetchUsers() {
+            fetch('/get_users')
+                .then(response => response.json())
+                .then(users => {
+                    const userSelect = document.getElementById('userSelect');
+                    userSelect.innerHTML = '<option value="">Select User</option>'; // Clear previous options
+                    users.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user.id;
+                        option.textContent = user.name;
+                        userSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching users:', error));
+        }
+
+        // Call fetchUsers when the page loads
+        document.addEventListener('DOMContentLoaded', fetchUsers);
+
+
+        // Function to fetch and display user's vehicles
+        function fetchUserVehicles() {
+            const selectedUser = document.getElementById('userSelect').value;
+            if (selectedUser) {
+                fetch(`/get_user_vehicles/${selectedUser}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const vehicleDetails = document.getElementById('vehicleDetails');
+                        vehicleDetails.innerHTML = ''; // Clear previous vehicle details
+                        if (data.length > 0) {
+                            const table = document.createElement('table');
+                            table.classList.add('table');
+                            table.innerHTML = `
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Make</th>
+                                        <th>Model</th>
+                                        <th>License No.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Vehicle details will be populated here -->
+                                </tbody>
+                            `;
+                            data.forEach(vehicle => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${vehicle.serialNo}</td>
+                                    <td>${vehicle.make}</td>
+                                    <td>${vehicle.model}</td>
+                                    <td>${vehicle.license}</td>
+                                `;
+                                table.querySelector('tbody').appendChild(row);
+                            });
+                            vehicleDetails.appendChild(table);
+                        } else {
+                            vehicleDetails.textContent = 'No vehicles found for selected user.';
+                        }
+                    })
+                    .catch(error => console.error('Error fetching user vehicles:', error));
+            }
+        }
+
+
+    </script>
+    
+</body>
+</html>
